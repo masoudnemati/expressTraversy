@@ -1,35 +1,21 @@
 const express = require("express");
 const path = require("path");
+const logger = require("./middleware/logger");
 
 const app = express();
 
-const members = [
-  {
-    id: 1,
-    name: "masoud",
-    email: "masoud@gmail.com",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "ali",
-    email: "ali@gmail.com",
-    status: "inactive",
-  },
-  {
-    id: 3,
-    name: "hasan",
-    email: "hasan@gmail.com",
-    status: "active",
-  },
-];
+//init middleware
+// app.use(logger);
 
-app.get("/api/members", (req, res) => {
-  res.json(members);
-});
+//body porser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 //set static folder
 app.use(express.static(path.join(__dirname, "public")));
+
+//members API routes
+app.use("/api/members", require("./routes/api/members"));
 
 const PORT = process.env.PORT || 5000;
 
